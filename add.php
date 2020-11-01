@@ -16,7 +16,12 @@ $failure = false;
 $success = false;
 if ( isset($_POST['make']) && isset($_POST['year']) 
      && isset($_POST['mileage'])) {
-        if (! is_numeric($_POST['year']) 
+        if  (strlen($_POST['make'])<1 || strlen($_POST['model'])<1|| strlen($_POST['mileage'])<1 || strlen($_POST['year'])<1) {
+           $_SESSION['error'] = 'All values are required';
+           header('location: add.php');
+            return;
+        } elseif 
+            (! is_numeric($_POST['year']) 
              || ! is_numeric($_POST['mileage'])){
             $_SESSION['error'] = "Mileage and year must be numeric";
         	header('location: add.php');
@@ -49,7 +54,7 @@ if ( isset($_POST['make']) && isset($_POST['year'])
             );
    //          $stmt = $pdo->query("SELECT make, year, mileage FROM autos");
 			// $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $_SESSION['success'] = "Record inserted";
+            $_SESSION['success'] = "Record added";
             header('location: index.php');
         	return;
 

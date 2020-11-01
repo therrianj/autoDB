@@ -28,7 +28,7 @@ if ( isset($_SESSION['error']) ) {
 }
 if ( ! isset($_SESSION['email'])) { ?>
 <p>
-<a href="login.php">Please Log In</a>
+<a href="login.php">Please log in</a>
 </p>
 
 <p>

@@ -1,7 +1,7 @@
 
 <?php
 session_start();
-
+require_once "pdo.php";
 if ( ! isset($_SESSION['email'] ) ) {
     
     die ("ACCESS DENIED");
@@ -11,7 +11,7 @@ if ( isset($_POST['cancel']) ) {
     header('Location: index.php');
     return;
 }
-require_once "pdo.php";
+
 $failure = false;
 $success = false;
 if ( isset($_POST['make']) && isset($_POST['model'])&& isset($_POST['year']) 
@@ -29,10 +29,7 @@ if ( isset($_POST['make']) && isset($_POST['model'])&& isset($_POST['year'])
         } 
         else{
 
-            $sql = "UPDATE autos SET make =:make, 
-            model = :model, year = :year, 
-            mileage = :mileage 
-            WHERE autos_id = :autos_id)";
+            $sql = "UPDATE autos SET make = :make, model = :model, year = :year, mileage = :mileage WHERE autos_id = :autos_id";
 
 
             // echo("<pre>\n".$sql."\n</pre>\n");
@@ -44,7 +41,7 @@ if ( isset($_POST['make']) && isset($_POST['model'])&& isset($_POST['year'])
             $year = ($_POST['year']);
             $mileage = ($_POST['mileage']);
             $autos_id = ($_POST['autos_id']);
-            $sql->bindParam(':autos_id',$autos_id,PDO::PARAM_INT, 11);
+
             // print_r($stmt);
             // echo $model;
             // echo $mileage;
