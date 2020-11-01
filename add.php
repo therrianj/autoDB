@@ -4,7 +4,11 @@ session_start();
 
 if ( ! isset($_SESSION['email'] ) ) {
     
-    die ("Not Logged In");
+    die ("ACCESS DENIED");
+    return;
+}
+if ( isset($_POST['cancel']) ) {
+    header('Location: index.php');
     return;
 }
 require_once "pdo.php";
@@ -18,33 +22,35 @@ if ( isset($_POST['make']) && isset($_POST['year'])
         	header('location: add.php');
         	return;
 
-        } elseif (strlen($_POST['make'])<1) {
-           $_SESSION['error'] = "Make is required";
+        } elseif (strlen($_POST['make'])<1 || strlen($_POST['model'])<1) {
+           $_SESSION['error'] = "Make and Model is required";
            header('location: add.php');
         	return;
         } 
         else{
 
-            $sql = "INSERT INTO autos (make, year, mileage) 
-                      VALUES (:make, :year, :mileage)";
+            $sql = "INSERT INTO autos (make, model, year, mileage) 
+                      VALUES (:make, :model, :year, :mileage)";
 
             // echo("<pre>\n".$sql."\n</pre>\n");
 
             $stmt = $pdo->prepare($sql);
 
             $make = ($_POST['make']);
+            $model = ($_POST['model']);
             $year = ($_POST['year']);
             $mileage = ($_POST['mileage']);
 
             $stmt->execute(array(       
                 ':make' => $make,
+                ':model' => $model,
                 ':year' => $year,
                 ':mileage' => $mileage)
             );
    //          $stmt = $pdo->query("SELECT make, year, mileage FROM autos");
 			// $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $_SESSION['success'] = "Record inserted";
-            header('location: view.php');
+            header('location: index.php');
         	return;
 
         }
@@ -75,6 +81,9 @@ if ( isset($_SESSION['error']) ) {
     <p>Make:
     <input type="text" name="make" size="60">
     </p>
+    <p>Model:
+    <input type="text" name="model" size="60">
+    </p>
     <p>Year:
     <input type="text" name="year">
     </p>
@@ -82,5 +91,5 @@ if ( isset($_SESSION['error']) ) {
     <input type="text" name="mileage">
     </p>
     <input type="submit" name="add" value="Add">
-    <input type="submit" name="logout" value="Logout">
+    <input type="submit" name="cancel" value="Cancel">
 </form>

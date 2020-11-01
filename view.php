@@ -8,7 +8,7 @@ if ( ! isset($_SESSION['email'] ) ) {
 }
 
 require_once "pdo.php";
-$stmt = $pdo->query("SELECT make, year, mileage FROM autos");
+$stmt = $pdo->query("SELECT make, model, year, mileage FROM autos");
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
